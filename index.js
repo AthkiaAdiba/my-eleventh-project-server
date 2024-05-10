@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
@@ -32,13 +32,29 @@ async function run() {
         const database = client.db("herittageHotel");
         const roomCollection = database.collection("rooms");
 
-        
+
         // get all data of rooms
         app.get('/rooms', async (req, res) => {
-            const cursor = roomCollection.find();
-            const result = await cursor.toArray();
+            const minPrice = parseInt(req.query.minPrice);
+            const maxPrice = parseInt(req.query.maxPrice)
+            // console.log(minPrice, maxPrice)
+
+
+            const result = await roomCollection
+            .find({"price_per_night": {$gte: minPrice, $lte: maxPrice}}).toArray();
+
             res.send(result)
-        })
+        });
+
+
+        // get one room details by id
+        app.get('/roomDetails/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log(id)
+            const query = { _id: new ObjectId(id) }
+            const result = await roomCollection.findOne(query)
+            res.send(result);
+        });
 
 
 
