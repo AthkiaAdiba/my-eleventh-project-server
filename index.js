@@ -31,6 +31,7 @@ async function run() {
 
         const database = client.db("herittageHotel");
         const roomCollection = database.collection("rooms");
+        const bookedRoomCollection = database.collection("bookedRooms");
 
 
         // get all data of rooms
@@ -39,9 +40,8 @@ async function run() {
             const maxPrice = parseInt(req.query.maxPrice)
             // console.log(minPrice, maxPrice)
 
-
             const result = await roomCollection
-            .find({"price_per_night": {$gte: minPrice, $lte: maxPrice}}).toArray();
+                .find({ "price_per_night": { $gte: minPrice, $lte: maxPrice } }).toArray();
 
             res.send(result)
         });
@@ -53,6 +53,14 @@ async function run() {
             console.log(id)
             const query = { _id: new ObjectId(id) }
             const result = await roomCollection.findOne(query)
+            res.send(result);
+        });
+
+        // add booked room
+        app.post('/bookRoom', async (req, res) => {
+            const bookRoom = req.body;
+            // console.log(bookRoom)
+            const result = await bookedRoomCollection.insertOne(bookRoom);
             res.send(result);
         });
 
