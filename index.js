@@ -56,6 +56,16 @@ async function run() {
             res.send(result);
         });
 
+
+        // get one room details of booked room by id
+        app.get('/bookedRoomDetails/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log(id)
+            const query = { _id: new ObjectId(id) }
+            const result = await bookedRoomCollection.findOne(query)
+            res.send(result);
+        });
+
         app.get('/bookedRoom/:email', async (req, res) => {
             const result = await bookedRoomCollection.find({ email: req.params.email }).toArray();
             console.log(result)
