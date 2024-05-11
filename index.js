@@ -56,7 +56,12 @@ async function run() {
             res.send(result);
         });
 
-        
+        app.get('/bookedRoom/:email', async (req, res) => {
+            const result = await bookedRoomCollection.find({ email: req.params.email }).toArray();
+            console.log(result)
+            res.send(result);
+        });
+
         // add booked room
         app.post('/bookRoom', async (req, res) => {
             const bookRoom = req.body;
