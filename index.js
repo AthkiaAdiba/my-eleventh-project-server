@@ -97,6 +97,23 @@ async function run() {
         });
 
 
+        // Update Date
+        app.patch('/updateDate/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) }
+            const updatedDate = req.body;
+            console.log(updatedDate);
+
+            const updatedDoc = {
+                $set: {
+                    date: updatedDate.date
+                }
+            }
+            const result = await bookedRoomCollection.updateOne(filter, updatedDoc)
+            res.send(result)
+        });
+
+
         // Delete a data of booking collection
         app.delete('/deleteBookedRoom/:id', async (req, res) => {
             const id = req.params.id;
