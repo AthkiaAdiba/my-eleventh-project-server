@@ -56,6 +56,7 @@ async function run() {
             res.send(result);
         });
 
+        
         // add booked room
         app.post('/bookRoom', async (req, res) => {
             const bookRoom = req.body;
@@ -63,6 +64,22 @@ async function run() {
             const result = await bookedRoomCollection.insertOne(bookRoom);
             res.send(result);
         });
+
+        // change availability status
+        app.patch('/availability/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) }
+            const updatedAvailability = req.body;
+            console.log(updatedAvailability);
+
+            const updatedDoc = {
+                $set: {
+                    availability: updatedAvailability.availability
+                }
+            }
+            const result = await roomCollection.updateOne(filter, updatedDoc)
+            res.send(result)
+        })
 
 
 
