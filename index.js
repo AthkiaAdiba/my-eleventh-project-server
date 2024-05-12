@@ -73,6 +73,14 @@ async function run() {
             res.send(result);
         });
 
+
+        // get comments by using room id of specific room
+        app.get('/comments/:id', async (req, res) => {
+            const result = await commentCollection.find({ room_id: req.params.id }).toArray();
+            console.log(result)
+            res.send(result);
+        });
+
         // add booked room
         app.post('/bookRoom', async (req, res) => {
             const bookRoom = req.body;
