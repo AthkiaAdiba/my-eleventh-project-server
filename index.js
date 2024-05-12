@@ -81,6 +81,14 @@ async function run() {
             res.send(result);
         });
 
+
+        // get all reviews
+        app.get('/allReviews', async (req, res) => {
+            const result = await commentCollection.find().sort( { "timestamp": -1 } ).toArray();
+            console.log(result)
+            res.send(result);
+        });
+
         // add booked room
         app.post('/bookRoom', async (req, res) => {
             const bookRoom = req.body;
