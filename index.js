@@ -32,6 +32,7 @@ async function run() {
         const database = client.db("herittageHotel");
         const roomCollection = database.collection("rooms");
         const bookedRoomCollection = database.collection("bookedRooms");
+        const commentCollection = database.collection("comments");
 
 
         // get all data of rooms
@@ -77,6 +78,15 @@ async function run() {
             const bookRoom = req.body;
             // console.log(bookRoom)
             const result = await bookedRoomCollection.insertOne(bookRoom);
+            res.send(result);
+        });
+
+
+        // add comment
+        app.post('/addComment', async (req, res) => {
+            const comment = req.body;
+            console.log(comment)
+            const result = await commentCollection.insertOne(comment);
             res.send(result);
         });
 
